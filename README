@@ -1,0 +1,8 @@
+
+clone hudi项目：https://github.com/apache/hudi
+安装本地flink最新版本：
+ mvn clean install -Dflink1.14  -pl packaging/hudi-flink-bundle
+
+ windows上运行hadoop客户端入hudi需要把winutils.exe放到HADOOP_HOME/bin下
+ winutils下载地址为：https://github.com/cdarlint/winutils
+
