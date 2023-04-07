@@ -3,30 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.example</groupId>
+        <artifactId>flink_spark_clustering</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
-    <groupId>org.example</groupId>
-    <artifactId>flink_spark_clustering</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <modules>
-        <module>flink_hudi</module>
-        <module>spark_clustering</module>
-        <module>hive_metastore</module>
-    </modules>
+    <artifactId>hive_metastore</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <flink1.14.version>1.14.3</flink1.14.version>
-        <spark2.version>2.4.4</spark2.version>
-        <spark3.version>3.2.3</spark3.version>
-        <hudi.spark.version>3.2</hudi.spark.version>
-        <spark.version>${spark3.version}</spark.version>
-<!--        <hive.version>2.3.1</hive.version>-->
-        <hive.version>3.1.2</hive.version>
-        <scala.binary.version>2.12</scala.binary.version>
-        <flink.bundle.version>0.14</flink.bundle.version>
     </properties>
 
     <dependencies>
@@ -39,6 +27,21 @@
             <groupId>org.apache.hive</groupId>
             <artifactId>hive-metastore</artifactId>
             <version>${hive.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-cli</artifactId>
+            <version>${hive.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-beeline</artifactId>
+            <version>${hive.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.31</version>
         </dependency>
     </dependencies>
 

@@ -11,7 +11,6 @@ import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 
 public class ToHudi {
-    public static String TABLE_PATH_TABLE1 = "file:///C://Users/Allen/Desktop/warehouse/t1";
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         Configuration configuration = new Configuration();
@@ -19,20 +18,27 @@ public class ToHudi {
         configuration.set(RestOptions.PORT, 8081);
         configuration.set(CoreOptions.DEFAULT_PARALLELISM, 3);
         TableEnvironment tableEnv = TableEnvironmentImpl.create(configuration);
-        tableEnv.executeSql("CREATE TABLE t1(\n" +
-                "  uuid bigint PRIMARY KEY NOT ENFORCED,\n" +
-                "  name VARCHAR(10),\n" +
-                "  age INT,\n" +
-                "  ts TIMESTAMP(3),\n" +
-                "  `partition` VARCHAR(20)\n" +
-                ")\n" +
-                "PARTITIONED BY (`partition`)\n" +
-                "WITH (\n" +
-                "  'connector' = 'hudi',\n" +
-                "  'path' = '" + TABLE_PATH_TABLE1 + "',\n" +
-                "  'table.type' = 'MERGE_ON_READ'\n" +
-//                "  ,'index.type' = 'BUCKET'\n" +
-                ")");
+        tableEnv.executeSql("create catalog my_catalog with (" +
+                "'type'='hudi','mode'='dfs','catalog.path'='file:///C://Users/Allen/Desktop/warehouse')");
+//        tableEnv.executeSql("CREATE TABLE if not exists my_catalog.`clustering`.t1(\n" +
+//                "  uuid bigint primary key,\n" +
+//                "  name VARCHAR(10),\n" +
+//                "  age INT,\n" +
+//                "  ts TIMESTAMP(6),\n" +
+//                "  `partition` VARCHAR(20)\n" +
+//                ")\n" +
+//                "PARTITIONED BY (`partition`)\n" +
+//                "WITH (\n" +
+//                "  'connector' = 'hudi',\n" +
+//                "  'table.type' = 'MERGE_ON_READ',\n" +
+//                "  'hoodie.metadata.enable' = 'false',\n" +
+//                "  'hive_sync.enabled' = 'true',\n" +
+//                "  'hive_sync.db' = 'clustering',\n" +
+//                "  'hive_sync.table' = 't1',\n" +
+//                "  'hive_sync.metastore.uris' = 'thrift://localhost:9083',\n" +
+//                "  'hoodie.datasource.write.hive_style_partitioning' = 'true'\n" +
+////                "  ,'index.type' = 'BUCKET'\n" +
+//                ")");
 //        tableEnv.executeSql("CREATE TABLE t1(\n" +
 //                "  uuid VARCHAR(20) PRIMARY KEY NOT ENFORCED,\n" +
 //                "  name VARCHAR(10),\n" +
@@ -60,6 +66,12 @@ public class ToHudi {
                 "'fields.age.max'='100',\n" +
                 "'fields.ts.kind'='random'\n" +
                 ")");
-        tableEnv.executeSql("insert into t1 select uuid, name, age, ts, '20230405' from t1_src").await();
+        tableEnv.executeSql("insert into " +
+                "my_catalog.`clustering`.t1 " +
+                "/*+OPTIONS('hive_sync.enabled' = 'true'," +
+                "'hive_sync.db' = 'clustering'," +
+                "'hive_sync.table' = 't1'," +
+                "'hive_sync.metastore.uris' = 'thrift://localhost:9083') */" +
+                " select uuid, name, age, ts, '20230405' from t1_src").await();
     }
 }

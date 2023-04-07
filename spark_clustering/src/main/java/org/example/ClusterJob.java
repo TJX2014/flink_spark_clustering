@@ -5,15 +5,17 @@ import org.apache.hudi.utilities.UtilHelpers;
 import org.apache.spark.api.java.JavaSparkContext;
 
 public class ClusterJob {
-    public static String TABLE_PATH_TABLE1 = "file:///C://Users/Allen/Desktop/warehouse/t1";
+    public static String TABLE_PATH_TABLE1 = "file:///C://Users/Allen/Desktop/warehouse/clustering/t1";
+
+    public static String TABLE_PATH_TABLE2 = "file:///C://Users/Allen/Desktop/warehouse/t2";
     public static String WAREHOUSE_BASE_PATH = "file:///C://Users/Allen/Desktop/warehouse";
     public static void main(String[] args) {
         HoodieClusteringJob.Config clusterClusteringConfig = buildHoodieClusteringUtilConfig(
                 TABLE_PATH_TABLE1
                  ,null
                  , true,
-                "scheduleandexecute",
-//                "execute",
+//                "scheduleandexecute",
+                "execute",
                 true);
         JavaSparkContext jsc =
                 UtilHelpers.buildSparkContext(ClusterJob.class.getName() + "-hoodie", "local[*]");

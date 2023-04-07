@@ -7,10 +7,16 @@ mvn clean install -Dflink1.14 -Dspark2.4 -Dscala-2.12 -DskipTests
  mvn clean install -Dflink1.14 -Dspark2.4 -Dscala-2.12 -DskipTests -pl packaging/hudi-flink-bundle
 
 安装spark
- mvn clean install -Dflink1.14 -Dspark2.4 -Dscala-2.12 -DskipTests -pl packaging/hudi-spark-bundle
+2.4:
+mvn clean install -Dflink1.14 -Dspark2.4 -Dscala-2.12 -DskipTests -pl packaging/hudi-spark-bundle
+3.2:
+mvn clean install -Dflink1.14 -Dspark3.2 -Dscala-2.12 -DskipTests -pl packaging/hudi-spark-bundle -am
 
 安装utilities
+2.4:
 mvn clean install -Dflink1.14 -Dspark2.4 -Dscala-2.12 -DskipTests -pl hudi-utilities
+3.2:
+mvn clean install -Dflink1.14 -Dspark3.2 -Dscala-2.12 -DskipTests -pl hudi-utilities -am
 
  windows上运行hadoop客户端入hudi需要把winutils.exe放到HADOOP_HOME/bin下
  winutils下载地址为：https://github.com/cdarlint/winutils
