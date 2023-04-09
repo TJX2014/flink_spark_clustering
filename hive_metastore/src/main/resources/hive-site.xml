@@ -1,4 +1,8 @@
 <configuration>
+  <property>
+    <name>hive.metastore.port</name>
+    <value>9099</value>
+  </property>
     <property>
     <name>javax.jdo.option.ConnectionURL</name>
     <value>jdbc:mysql://localhost:3306/hive_metastore_0407?createDatabaseIfNotExist=true</value>

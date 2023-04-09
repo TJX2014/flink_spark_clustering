@@ -23,8 +23,9 @@
         <spark3.version>3.2.3</spark3.version>
         <hudi.spark.version>3.2</hudi.spark.version>
         <spark.version>${spark3.version}</spark.version>
-<!--        <hive.version>2.3.1</hive.version>-->
-        <hive.version>3.1.2</hive.version>
+        <hive.version>2.3.9</hive.version>
+        <!--        <hive.version>2.3.1</hive.version>-->
+        <!--        <hive.version>3.1.2</hive.version>-->
         <scala.binary.version>2.12</scala.binary.version>
         <flink.bundle.version>0.14</flink.bundle.version>
     </properties>
@@ -32,13 +33,39 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.hive</groupId>
-            <artifactId>hive-exec</artifactId>
+            <artifactId>hive-metastore</artifactId>
             <version>${hive.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.hive</groupId>
-            <artifactId>hive-metastore</artifactId>
+            <artifactId>hive-exec</artifactId>
             <version>${hive.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.pentaho</groupId>
+                    <artifactId>pentaho-aggdesigner-algorithm</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-mapreduce-client-core</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>2.10.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-math3</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

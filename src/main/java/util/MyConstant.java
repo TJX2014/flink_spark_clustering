@@ -1,6 +1,6 @@
 package util;
 
-public class Constant {
+public class MyConstant {
     String desktop = "D://data//hudi/t1";
     String t2 = "file:///C:/Users/Allen/Desktop/warehouse/t1";
 

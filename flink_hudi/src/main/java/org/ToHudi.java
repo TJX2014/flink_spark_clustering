@@ -10,7 +10,11 @@ import org.apache.flink.table.api.internal.TableEnvironmentImpl;
 import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 
+import static org.Constants.WAREHOUSE;
+
 public class ToHudi {
+
+
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         Configuration configuration = new Configuration();
@@ -19,26 +23,26 @@ public class ToHudi {
         configuration.set(CoreOptions.DEFAULT_PARALLELISM, 3);
         TableEnvironment tableEnv = TableEnvironmentImpl.create(configuration);
         tableEnv.executeSql("create catalog my_catalog with (" +
-                "'type'='hudi','mode'='dfs','catalog.path'='file:///C://Users/Allen/Desktop/warehouse')");
-//        tableEnv.executeSql("CREATE TABLE if not exists my_catalog.`clustering`.t1(\n" +
-//                "  uuid bigint primary key,\n" +
-//                "  name VARCHAR(10),\n" +
-//                "  age INT,\n" +
-//                "  ts TIMESTAMP(6),\n" +
-//                "  `partition` VARCHAR(20)\n" +
-//                ")\n" +
-//                "PARTITIONED BY (`partition`)\n" +
-//                "WITH (\n" +
-//                "  'connector' = 'hudi',\n" +
-//                "  'table.type' = 'MERGE_ON_READ',\n" +
-//                "  'hoodie.metadata.enable' = 'false',\n" +
-//                "  'hive_sync.enabled' = 'true',\n" +
-//                "  'hive_sync.db' = 'clustering',\n" +
-//                "  'hive_sync.table' = 't1',\n" +
-//                "  'hive_sync.metastore.uris' = 'thrift://localhost:9083',\n" +
-//                "  'hoodie.datasource.write.hive_style_partitioning' = 'true'\n" +
-////                "  ,'index.type' = 'BUCKET'\n" +
-//                ")");
+                "'type'='hudi','mode'='dfs','catalog.path'='" + WAREHOUSE + "')");
+        tableEnv.executeSql("CREATE TABLE if not exists my_catalog.`clustering`.t1(\n" +
+                "  uuid bigint primary key,\n" +
+                "  name VARCHAR(10),\n" +
+                "  age INT,\n" +
+                "  ts TIMESTAMP(6),\n" +
+                "  `partition` VARCHAR(20)\n" +
+                ")\n" +
+                "PARTITIONED BY (`partition`)\n" +
+                "WITH (\n" +
+                "  'connector' = 'hudi',\n" +
+                "  'table.type' = 'MERGE_ON_READ',\n" +
+                "  'hoodie.metadata.enable' = 'false',\n" +
+                "  'hive_sync.enabled' = 'true',\n" +
+                "  'hive_sync.db' = 'clustering',\n" +
+                "  'hive_sync.table' = 't1',\n" +
+                "  'hive_sync.metastore.uris' = 'thrift://localhost:9099',\n" +
+                "  'hoodie.datasource.write.hive_style_partitioning' = 'true'\n" +
+//                "  ,'index.type' = 'BUCKET'\n" +
+                ")");
 //        tableEnv.executeSql("CREATE TABLE t1(\n" +
 //                "  uuid VARCHAR(20) PRIMARY KEY NOT ENFORCED,\n" +
 //                "  name VARCHAR(10),\n" +
