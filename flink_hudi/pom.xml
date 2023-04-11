@@ -46,6 +46,14 @@
             <artifactId>hudi-flink1.14-bundle</artifactId>
             <version>0.14.0-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>outer</groupId>
+            <artifactId>function</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/Allen/Workspace/flink_udf_test1/target/flink_udf_test1-1.0-SNAPSHOT.jar</systemPath>
+        </dependency>
     </dependencies>
 
 </project>

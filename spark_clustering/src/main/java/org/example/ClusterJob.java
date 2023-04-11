@@ -4,18 +4,19 @@ import org.apache.hudi.utilities.HoodieClusteringJob;
 import org.apache.hudi.utilities.UtilHelpers;
 import org.apache.spark.api.java.JavaSparkContext;
 
-public class ClusterJob {
-    public static String TABLE_PATH_TABLE1 = "file:///C://Users/Allen/Desktop/warehouse/clustering/t1";
+import static org.example.Constants.TABLE_PATH_TABLE3;
 
+public class ClusterJob {
     public static String TABLE_PATH_TABLE2 = "file:///C://Users/Allen/Desktop/warehouse/t2";
     public static String WAREHOUSE_BASE_PATH = "file:///C://Users/Allen/Desktop/warehouse";
     public static void main(String[] args) {
         HoodieClusteringJob.Config clusterClusteringConfig = buildHoodieClusteringUtilConfig(
-                TABLE_PATH_TABLE1
+                TABLE_PATH_TABLE3
                  ,null
                  , true,
-//                "scheduleandexecute",
                 "execute",
+//                "scheduleandexecute",
+//                "execute",
                 true);
         JavaSparkContext jsc =
                 UtilHelpers.buildSparkContext(ClusterJob.class.getName() + "-hoodie", "local[*]");
@@ -25,8 +26,7 @@ public class ClusterJob {
 
     private static HoodieClusteringJob.Config buildHoodieClusteringUtilConfig(String basePath,
                                                                        String clusteringInstantTime,
-                                                                       Boolean runSchedule,
-                                                                       String runningMode,
+                                                                       Boolean runSchedule,String runningMode,
                                                                        Boolean retryLastFailedClusteringJob) {
         HoodieClusteringJob.Config config = new HoodieClusteringJob.Config();
         config.basePath = basePath;

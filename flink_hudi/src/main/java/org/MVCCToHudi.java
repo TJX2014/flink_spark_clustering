@@ -10,39 +10,37 @@ import org.apache.flink.table.api.internal.TableEnvironmentImpl;
 import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 
-import static org.Constants.WAREHOUSE;
-
-public class ToHudi {
-
-
+public class MVCCToHudi {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         Configuration configuration = new Configuration();
         configuration.set(ExecutionCheckpointingOptions.CHECKPOINTING_INTERVAL, Duration.ofMinutes(1));
         configuration.set(RestOptions.PORT, 8081);
+        configuration.set(RestOptions.ENABLE_FLAMEGRAPH, true);
         configuration.set(CoreOptions.DEFAULT_PARALLELISM, 3);
         TableEnvironment tableEnv = TableEnvironmentImpl.create(configuration);
         tableEnv.executeSql("create catalog my_catalog with (" +
-                "'type'='hudi','mode'='dfs','catalog.path'='" + WAREHOUSE + "')");
-        tableEnv.executeSql("CREATE TABLE if not exists my_catalog.`clustering`.t1(\n" +
-                "  uuid bigint primary key,\n" +
-                "  name VARCHAR(10),\n" +
-                "  age INT,\n" +
-                "  ts TIMESTAMP(6),\n" +
-                "  `partition` VARCHAR(20)\n" +
-                ")\n" +
-                "PARTITIONED BY (`partition`)\n" +
-                "WITH (\n" +
-                "  'connector' = 'hudi',\n" +
-                "  'table.type' = 'MERGE_ON_READ',\n" +
-                "  'hoodie.metadata.enable' = 'false',\n" +
-                "  'hive_sync.enabled' = 'true',\n" +
-                "  'hive_sync.db' = 'clustering',\n" +
-                "  'hive_sync.table' = 't1',\n" +
-                "  'hive_sync.metastore.uris' = 'thrift://localhost:9099',\n" +
-                "  'hoodie.datasource.write.hive_style_partitioning' = 'true'\n" +
-//                "  ,'index.type' = 'BUCKET'\n" +
-                ")");
+                "'type'='hudi','mode'='hms')");
+//        tableEnv.executeSql("create database if not exists my_catalog.`clustering3`");
+//        tableEnv.executeSql("CREATE TABLE if not exists my_catalog.`clustering3`.t3(\n" +
+//                "  uuid bigint primary key,\n" +
+//                "  name VARCHAR(10),\n" +
+//                "  age INT,\n" +
+//                "  ts TIMESTAMP(6),\n" +
+//                "  `partition` VARCHAR(20)\n" +
+//                ")\n" +
+//                "PARTITIONED BY (`partition`)\n" +
+//                "WITH (\n" +
+//                "  'connector' = 'hudi',\n" +
+//                "  'table.type' = 'MERGE_ON_READ',\n" +
+//                "  'hoodie.metadata.enable' = 'false',\n" +
+//                "  'hive_sync.enabled' = 'true',\n" +
+//                "  'hive_sync.db' = 'clustering3',\n" +
+//                "  'hive_sync.table' = 't3',\n" +
+//                "  'hive_sync.metastore.uris' = 'thrift://localhost:9099',\n" +
+//                "  'hoodie.datasource.write.hive_style_partitioning' = 'true'\n" +
+////                "  ,'index.type' = 'BUCKET'\n" +
+//                ")");
 //        tableEnv.executeSql("CREATE TABLE t1(\n" +
 //                "  uuid VARCHAR(20) PRIMARY KEY NOT ENFORCED,\n" +
 //                "  name VARCHAR(10),\n" +
@@ -71,11 +69,13 @@ public class ToHudi {
                 "'fields.ts.kind'='random'\n" +
                 ")");
         tableEnv.executeSql("insert into " +
-                "my_catalog.`clustering`.t1 " +
+                "my_catalog.`clustering3`.t3 " +
                 "/*+OPTIONS('hive_sync.enabled' = 'true'," +
-                "'hive_sync.db' = 'clustering'," +
-                "'hive_sync.table' = 't1'," +
-                "'hive_sync.metastore.uris' = 'thrift://localhost:9083') */" +
+                "'hoodie.write.concurrency.mode' = 'optimistic_concurrency_control'," +
+                "'hoodie.write.lock.provider' = 'org.apache.hudi.client.transaction.lock.FileSystemBasedLockProvider'," +
+                "'hive_sync.db' = 'clustering3'," +
+                "'hive_sync.table' = 't3'," +
+                "'hive_sync.metastore.uris' = 'thrift://localhost:9099') */" +
                 " select uuid, name, age, ts, '20230405' from t1_src").await();
     }
 }

@@ -24,4 +24,9 @@
     <value>123456</value>
     <description>password to use against metastore database</description>
   </property>
+
+  <property>
+    <name>hive.metastore.warehouse.dir</name>
+    <value>file:///C://Users//Allen//Desktop//warehouse</value>
+  </property>
 </configuration>
