@@ -18,6 +18,9 @@ mvn clean install -Dflink1.14 -Dspark2.4 -Dscala-2.12 -DskipTests -pl hudi-utili
 3.2:
 mvn clean install -Dflink1.14 -Dspark3.2 -Dscala-2.12 -DskipTests -pl hudi-utilities -am
 
- windows上运行hadoop客户端入hudi需要把winutils.exe放到HADOOP_HOME/bin下
- winutils下载地址为：https://github.com/cdarlint/winutils
+flink打包
+mvn package -DskipTests -D"rat.skip=true" -D"spotless.check.skip=true" -D"checkstyle.skip=true" -P"scala-2.12"
+
+windows上运行hadoop客户端入hudi需要把winutils.exe放到HADOOP_HOME/bin下
+winutils下载地址为：https://github.com/cdarlint/winutils
 

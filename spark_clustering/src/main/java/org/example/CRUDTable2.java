@@ -6,7 +6,7 @@ import org.apache.spark.sql.SparkSession;
 
 import java.util.List;
 
-public class CRUDTable {
+public class CRUDTable2 {
 
     public static void main(String[] args) throws AnalysisException, ClassNotFoundException {
         SparkSession.Builder builder = SparkSession.builder().appName("hudi_crud");

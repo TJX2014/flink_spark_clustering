@@ -4,18 +4,18 @@ import org.apache.hudi.utilities.HoodieClusteringJob;
 import org.apache.hudi.utilities.UtilHelpers;
 import org.apache.spark.api.java.JavaSparkContext;
 
-import static org.example.Constants.TABLE_PATH_TABLE3;
+import static org.example.Constants.TABLE_PATH_TABLE;
 
 public class ClusterJob {
     public static String TABLE_PATH_TABLE2 = "file:///C://Users/Allen/Desktop/warehouse/t2";
     public static String WAREHOUSE_BASE_PATH = "file:///C://Users/Allen/Desktop/warehouse";
     public static void main(String[] args) {
         HoodieClusteringJob.Config clusterClusteringConfig = buildHoodieClusteringUtilConfig(
-                TABLE_PATH_TABLE3
+                TABLE_PATH_TABLE
                  ,null
                  , true,
-                "execute",
-//                "scheduleandexecute",
+//                "execute",
+                "scheduleandexecute",
 //                "execute",
                 true);
         JavaSparkContext jsc =

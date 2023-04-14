@@ -12,22 +12,25 @@
         <module>flink_hudi</module>
         <module>spark_clustering</module>
         <module>hive_metastore</module>
+        <module>hadoop_base</module>
     </modules>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <flink1.14.version>1.14.3</flink1.14.version>
+        <flink.version>1.14.3</flink.version>
+<!--        <flink.version>1.18-SNAPSHOT</flink.version>-->
         <spark2.version>2.4.4</spark2.version>
         <spark3.version>3.2.3</spark3.version>
         <hudi.spark.version>3.2</hudi.spark.version>
         <spark.version>${spark3.version}</spark.version>
-        <hive.version>2.3.9</hive.version>
-        <!--        <hive.version>2.3.1</hive.version>-->
+<!--        <hive.version>2.3.9</hive.version>-->
+        <hive.version>2.3.1</hive.version>
         <!--        <hive.version>3.1.2</hive.version>-->
         <scala.binary.version>2.12</scala.binary.version>
         <flink.bundle.version>0.14</flink.bundle.version>
+        <hadoop.version>2.10.1</hadoop.version>
     </properties>
 
     <dependencies>
@@ -50,12 +53,12 @@
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-mapreduce-client-core</artifactId>
-            <version>2.10.1</version>
+            <version>${hadoop.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-common</artifactId>
-            <version>2.10.1</version>
+            <version>${hadoop.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.commons</groupId>
