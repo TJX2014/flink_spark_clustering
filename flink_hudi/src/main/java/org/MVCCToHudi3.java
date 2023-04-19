@@ -10,7 +10,7 @@ import org.apache.flink.table.api.internal.TableEnvironmentImpl;
 
 import java.time.Duration;
 
-public class MVCCToHudi {
+public class MVCCToHudi3 {
 
     public static void main(String[] args) throws Exception {
         Configuration configuration = new Configuration();
@@ -25,9 +25,8 @@ public class MVCCToHudi {
 
         tableEnv.executeSql("create catalog my_catalog with (" +
                 "'type'='hudi','mode'='hms')");
-//        tableEnv.executeSql("drop table my_catalog.`clustering3`.t2");
 //        tableEnv.executeSql("create database if not exists my_catalog.`clustering3`");
-        tableEnv.executeSql("CREATE TABLE if not exists my_catalog.`clustering3`.t2(\n" +
+        tableEnv.executeSql("CREATE TABLE if not exists my_catalog.`clustering3`.t3(\n" +
                 "  uuid bigint primary key,\n" +
                 "  name VARCHAR(10),\n" +
                 "  age INT,\n" +
@@ -46,7 +45,6 @@ public class MVCCToHudi {
                 "  'hoodie.datasource.write.hive_style_partitioning' = 'true'\n" +
 //                "  ,'index.type' = 'BUCKET'\n" +
                 ")");
-
         tableEnv.executeSql("CREATE TABLE t1_print(\n" +
                 "  uuid bigint PRIMARY KEY NOT ENFORCED,\n" +
                 "  name VARCHAR(10),\n" +
@@ -80,12 +78,11 @@ public class MVCCToHudi {
 
         StatementSet statementSet = tableEnv.createStatementSet();
         statementSet.addInsertSql("insert into " +
-                "my_catalog.`clustering3`.t2 " +
-                "/*+OPTIONS('hive_sync.enabled' = 'false'," +
+                "my_catalog.`clustering3`.t3 " +
+                "/*+OPTIONS('hive_sync.enabled' = 'true'," +
                 "'hoodie.write.concurrency.mode' = 'optimistic_concurrency_control'," +
                 "'hoodie.write.lock.provider' = 'org.apache.hudi.client.transaction.lock.FileSystemBasedLockProvider'," +
-                "'hoodie.compact.inline.max.delta.commits' = '3'," +
-                "'compaction.async.enabled' = 'true'" +
+                "'hoodie.compact.inline.max.delta.commits' = '2'" +
                 ") */" +
                 " select uuid, name, age, ts, '20230405' from t1_src");
         statementSet.addInsertSql("insert into t1_print select * from t1_src");

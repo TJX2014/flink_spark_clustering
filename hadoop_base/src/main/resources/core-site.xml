@@ -1,0 +1,8 @@
+<configuration>
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://localhost:8020/</value>
+        <description>默认的HDFS端口，用于NameNode与DataNode之间到的通讯，IP为NameNode的地址</description>
+    </property>
+
+</configuration>

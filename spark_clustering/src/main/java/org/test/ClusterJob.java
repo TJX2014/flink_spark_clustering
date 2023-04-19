@@ -1,27 +1,35 @@
-package org.example;
+package org.test;
 
 import org.apache.hudi.utilities.HoodieClusteringJob;
 import org.apache.hudi.utilities.UtilHelpers;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import static org.example.Constants.TABLE_PATH_TABLE;
+import static org.test.Constants.TABLE_PATH_TABLE;
 
 public class ClusterJob {
+
+    private static Logger LOG = LoggerFactory.getLogger(ClusterJob.class);
     public static String TABLE_PATH_TABLE2 = "file:///C://Users/Allen/Desktop/warehouse/t2";
     public static String WAREHOUSE_BASE_PATH = "file:///C://Users/Allen/Desktop/warehouse";
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         HoodieClusteringJob.Config clusterClusteringConfig = buildHoodieClusteringUtilConfig(
                 TABLE_PATH_TABLE
                  ,null
                  , true,
 //                "execute",
                 "scheduleandexecute",
+//                "schedule",
 //                "execute",
                 true);
         JavaSparkContext jsc =
                 UtilHelpers.buildSparkContext(ClusterJob.class.getName() + "-hoodie", "local[*]");
         HoodieClusteringJob clusterClusteringJob = new HoodieClusteringJob(jsc, clusterClusteringConfig);
-        clusterClusteringJob.cluster(clusterClusteringConfig.retry);
+        while (true) {
+            clusterClusteringJob.cluster(clusterClusteringConfig.retry);
+            Thread.sleep(1000);
+        }
     }
 
     private static HoodieClusteringJob.Config buildHoodieClusteringUtilConfig(String basePath,

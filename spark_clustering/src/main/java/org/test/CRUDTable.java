@@ -1,4 +1,4 @@
-package org.example;
+package org.test;
 
 import org.apache.spark.sql.AnalysisException;
 import org.apache.spark.sql.Row;
@@ -6,7 +6,7 @@ import org.apache.spark.sql.SparkSession;
 
 import java.util.List;
 
-public class CRUDTable2 {
+public class CRUDTable {
 
     public static void main(String[] args) throws AnalysisException, ClassNotFoundException {
         SparkSession.Builder builder = SparkSession.builder().appName("hudi_crud");
@@ -18,6 +18,8 @@ public class CRUDTable2 {
         builder.master("local[*]");
         builder.enableHiveSupport();
         SparkSession spark = builder.getOrCreate();
+        spark.sql("create database  `clustering_append3` location 'hdfs://hdfs1:9000/usr/hive/warehouse/'");
+//        spark.sql("create database  `clustering_append` location 'hdfs://localhost:8020/usr/hive/warehouse/'");
 //        spark.read().format("hudi").load(TABLE_PATH_TABLE1).createTempView("t1");
         List<Row> dbs = spark.sql("show databases").collectAsList();
         spark.sql("set hoodie.metadata.enable=false");
@@ -26,27 +28,26 @@ public class CRUDTable2 {
 //        spark.sessionState()
 //        spark.sql("create database test2");
 //        spark.sql("show databases").collectAsList();
-//        spark.sql(
-//                "CREATE TABLE if not exists t1(\n" +
-//                        "  uuid bigint,\n" +
-//                        "  name string,\n" +
-//                        "  age INT,\n" +
-//                        "  ts TIMESTAMP,\n" +
-//                        "  `partition` string\n" +
-//                        ")\n" +
-//                        "using hudi \n" +
-//                        "location '" + TABLE_PATH_TABLE1 + "'\n" +
-//                        "options (\n" +
-//                        "  'primaryKey' = 'uuid',\n" +
-//                        "  'preCombineField' = 'ts',\n" +
-//                        "  'type' = 'MERGE_ON_READ'\n" +
-//                        ")\n" +
-//                        "PARTITIONED BY (`partition`)");
+        spark.sql("drop table clustering3.t1");
+        spark.sql(
+                "CREATE TABLE if not exists clustering3.t2(\n" +
+                        "  uuid bigint,\n" +
+                        "  name string,\n" +
+                        "  age INT,\n" +
+                        "  ts TIMESTAMP,\n" +
+                        "  `partition` string\n" +
+                        ")\n" +
+                        "using hudi \n" +
+                        "options (\n" +
+                        "  'primaryKey' = 'uuid',\n" +
+                        "  'preCombineField' = 'ts',\n" +
+                        "  'type' = 'MERGE_ON_READ'\n" +
+                        ")\n" +
+                        "PARTITIONED BY (`partition`)");
 
-//        spark.sql("insert into t1 select 100,'aaa',75,timestamp(16807831), '20230405'");
-        spark.sql("use clustering");
-        System.out.println("update once");
-//        spark.sql("update clustering3.t3 set name='xiaoxing111' where uuid in (100, 101, 102)");
+        spark.sql("insert into clustering3.t2 select 100,'aaa',75,timestamp(16807831), '20230405'");
+//        spark.sql("use clustering");
+        spark.sql("update clustering3.t2 set name='xiaoxing111' where uuid in (100, 101, 102)");
         List<Row> rows = spark.sql("select * from clustering3.t2").collectAsList();
         System.out.println("result rows:" + rows);
 //        while (true) {
