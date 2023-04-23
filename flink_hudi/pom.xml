@@ -19,6 +19,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-planner_${scala.binary.version}</artifactId>
             <version>${flink.version}</version>
@@ -53,12 +58,12 @@
             <artifactId>flink-connector-hive_2.12</artifactId>
             <version>${flink.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.apache.flink</groupId>-->
-<!--            <artifactId>flink-sql-gateway</artifactId>-->
-<!--            <version>${flink.version}</version>-->
-<!--            &lt;!&ndash;            <version>dlink-1.14.3-SNAPSHOT</version>&ndash;&gt;-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.flink</groupId>-->
+        <!--            <artifactId>flink-sql-gateway</artifactId>-->
+        <!--            <version>${flink.version}</version>-->
+        <!--            &lt;!&ndash;            <version>dlink-1.14.3-SNAPSHOT</version>&ndash;&gt;-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-hdfs</artifactId>
@@ -67,7 +72,7 @@
         <dependency>
             <groupId>org.apache.hudi</groupId>
             <artifactId>hudi-flink1.14-bundle</artifactId>
-            <version>0.14.0-SNAPSHOT</version>
+            <version>${hudi.version}</version>
         </dependency>
 
         <dependency>

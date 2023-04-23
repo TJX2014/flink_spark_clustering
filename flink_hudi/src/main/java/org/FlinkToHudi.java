@@ -7,12 +7,21 @@ import org.apache.flink.streaming.api.environment.ExecutionCheckpointingOptions;
 import org.apache.flink.table.api.StatementSet;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.internal.TableEnvironmentImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import java.time.Duration;
 
-public class MVCCToHudi {
+public class FlinkToHudi {
+
+    static Logger log = LoggerFactory.getLogger(FlinkToHudi.class);
 
     public static void main(String[] args) throws Exception {
+        MDC.put("traceId", "222");
+
+        log.info("aaa");
+
         Configuration configuration = new Configuration();
 //        configuration.set(ExecutionCheckpointingOptions.CHECKPOINTING_INTERVAL, Duration.ofMinutes(1));
         Duration checkpointInterval = Duration.ofSeconds(10);
@@ -27,7 +36,7 @@ public class MVCCToHudi {
                 "'type'='hudi','mode'='hms')");
 //        tableEnv.executeSql("drop table my_catalog.`clustering3`.t2");
 //        tableEnv.executeSql("create database if not exists my_catalog.`clustering3`");
-        tableEnv.executeSql("CREATE TABLE if not exists my_catalog.`clustering3`.t2(\n" +
+        tableEnv.executeSql("CREATE TABLE if not exists my_catalog.`clustering3`.t3(\n" +
                 "  uuid bigint primary key,\n" +
                 "  name VARCHAR(10),\n" +
                 "  age INT,\n" +
@@ -68,8 +77,8 @@ public class MVCCToHudi {
                 ") with (\n" +
                 " 'connector'='datagen',\n" +
                 " 'rows-per-second'='1',\n" +
-                " 'fields.uuid.start'='1',\n" +
-                " 'fields.uuid.end'='60',\n" +
+                " 'fields.uuid.start'='0',\n" +
+                " 'fields.uuid.end'='10',\n" +
                 " 'fields.uuid.kind'='sequence',\n" +
                 " 'fields.name.length'='6',\n" +
                 " 'fields.age.kind'='random',\n" +
@@ -80,15 +89,20 @@ public class MVCCToHudi {
 
         StatementSet statementSet = tableEnv.createStatementSet();
         statementSet.addInsertSql("insert into " +
-                "my_catalog.`clustering3`.t2 " +
-                "/*+OPTIONS('hive_sync.enabled' = 'false'," +
+                "my_catalog.`clustering3`.t3 " +
+                "/*+OPTIONS(" +
+                "'hive_sync.enabled' = 'false'," +
                 "'hoodie.write.concurrency.mode' = 'optimistic_concurrency_control'," +
                 "'hoodie.write.lock.provider' = 'org.apache.hudi.client.transaction.lock.FileSystemBasedLockProvider'," +
-                "'hoodie.compact.inline.max.delta.commits' = '3'," +
-                "'compaction.async.enabled' = 'true'" +
+//                "'hoodie.compact.inline.max.delta.commits' = '2'," +
+                "'hoodie.clustering.async.max.commits' = '2'," +
+                "'compaction.schedule.enabled' = 'false'," +
+                "'clustering.schedule.enabled' = 'true'" +
                 ") */" +
                 " select uuid, name, age, ts, '20230405' from t1_src");
         statementSet.addInsertSql("insert into t1_print select * from t1_src");
+
+//
 
         statementSet.execute();
     }

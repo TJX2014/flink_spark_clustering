@@ -31,6 +31,7 @@
         <scala.binary.version>2.12</scala.binary.version>
         <flink.bundle.version>0.14</flink.bundle.version>
         <hadoop.version>2.10.1</hadoop.version>
+        <hudi.version>0.12.2</hudi.version>
     </properties>
 
     <dependencies>

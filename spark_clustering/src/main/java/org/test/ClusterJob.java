@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static org.test.Constants.TABLE_PATH_TABLE;
+import static org.test.Constants.TABLE_PATH_TABLE3;
 
 public class ClusterJob {
 
@@ -15,21 +16,21 @@ public class ClusterJob {
     public static String WAREHOUSE_BASE_PATH = "file:///C://Users/Allen/Desktop/warehouse";
     public static void main(String[] args) throws InterruptedException {
         HoodieClusteringJob.Config clusterClusteringConfig = buildHoodieClusteringUtilConfig(
-                TABLE_PATH_TABLE
+                TABLE_PATH_TABLE3
                  ,null
                  , true,
-//                "execute",
-                "scheduleandexecute",
+                "execute",
+//                "scheduleandexecute",
 //                "schedule",
 //                "execute",
                 true);
         JavaSparkContext jsc =
                 UtilHelpers.buildSparkContext(ClusterJob.class.getName() + "-hoodie", "local[*]");
         HoodieClusteringJob clusterClusteringJob = new HoodieClusteringJob(jsc, clusterClusteringConfig);
-        while (true) {
+//        while (true) {
             clusterClusteringJob.cluster(clusterClusteringConfig.retry);
             Thread.sleep(1000);
-        }
+//        }
     }
 
     private static HoodieClusteringJob.Config buildHoodieClusteringUtilConfig(String basePath,
