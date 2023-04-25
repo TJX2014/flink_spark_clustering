@@ -1,4 +1,4 @@
-package org.test;
+package org.study;
 
 public class Constants {
 

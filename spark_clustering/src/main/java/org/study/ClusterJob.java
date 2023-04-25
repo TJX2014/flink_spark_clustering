@@ -1,4 +1,4 @@
-package org.test;
+package org.study;
 
 import org.apache.hudi.utilities.HoodieClusteringJob;
 import org.apache.hudi.utilities.UtilHelpers;
@@ -6,8 +6,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.test.Constants.TABLE_PATH_TABLE;
-import static org.test.Constants.TABLE_PATH_TABLE3;
+import static org.study.Constants.TABLE_PATH_TABLE3;
 
 public class ClusterJob {
 
@@ -19,18 +18,20 @@ public class ClusterJob {
                 TABLE_PATH_TABLE3
                  ,null
                  , true,
-                "execute",
+//                "execute",
 //                "scheduleandexecute",
 //                "schedule",
+                "schedule",
 //                "execute",
                 true);
         JavaSparkContext jsc =
                 UtilHelpers.buildSparkContext(ClusterJob.class.getName() + "-hoodie", "local[*]");
+
         HoodieClusteringJob clusterClusteringJob = new HoodieClusteringJob(jsc, clusterClusteringConfig);
-//        while (true) {
+        while (true) {
             clusterClusteringJob.cluster(clusterClusteringConfig.retry);
             Thread.sleep(1000);
-//        }
+        }
     }
 
     private static HoodieClusteringJob.Config buildHoodieClusteringUtilConfig(String basePath,

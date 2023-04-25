@@ -82,6 +82,7 @@ public class MVCCToHudi3 {
                 "/*+OPTIONS('hive_sync.enabled' = 'true'," +
                 "'hoodie.write.concurrency.mode' = 'optimistic_concurrency_control'," +
                 "'hoodie.write.lock.provider' = 'org.apache.hudi.client.transaction.lock.FileSystemBasedLockProvider'," +
+                "'hoodie.cleaner.policy.failed.writes' = 'LAZY'," +
                 "'hoodie.compact.inline.max.delta.commits' = '2'" +
                 ") */" +
                 " select uuid, name, age, ts, '20230405' from t1_src");

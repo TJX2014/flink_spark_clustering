@@ -1,11 +1,11 @@
-package org.test;
+package org.study;
 
 import org.apache.hudi.table.action.compact.strategy.LogFileNumBasedCompactionStrategy;
 import org.apache.hudi.utilities.HoodieCompactor;
 import org.apache.hudi.utilities.UtilHelpers;
 import org.apache.spark.api.java.JavaSparkContext;
 
-import static org.test.Constants.TABLE_PATH_TABLE;
+import static org.study.Constants.TABLE_PATH_TABLE;
 
 public class CompactionJob {
 

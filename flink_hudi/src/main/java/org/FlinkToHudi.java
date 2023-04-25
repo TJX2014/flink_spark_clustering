@@ -53,7 +53,6 @@ public class FlinkToHudi {
                 "  'hive_sync.table' = 't2',\n" +
                 "  'hive_sync.metastore.uris' = 'thrift://localhost:9099',\n" +
                 "  'hoodie.datasource.write.hive_style_partitioning' = 'true'\n" +
-//                "  ,'index.type' = 'BUCKET'\n" +
                 ")");
 
         tableEnv.executeSql("CREATE TABLE t1_print(\n" +
@@ -78,7 +77,7 @@ public class FlinkToHudi {
                 " 'connector'='datagen',\n" +
                 " 'rows-per-second'='1',\n" +
                 " 'fields.uuid.start'='0',\n" +
-                " 'fields.uuid.end'='10',\n" +
+                " 'fields.uuid.end'='100',\n" +
                 " 'fields.uuid.kind'='sequence',\n" +
                 " 'fields.name.length'='6',\n" +
                 " 'fields.age.kind'='random',\n" +
@@ -94,15 +93,16 @@ public class FlinkToHudi {
                 "'hive_sync.enabled' = 'false'," +
                 "'hoodie.write.concurrency.mode' = 'optimistic_concurrency_control'," +
                 "'hoodie.write.lock.provider' = 'org.apache.hudi.client.transaction.lock.FileSystemBasedLockProvider'," +
-//                "'hoodie.compact.inline.max.delta.commits' = '2'," +
+                "'hoodie.compact.inline.max.delta.commits' = '2'," +
+                "'hoodie.cleaner.policy.failed.writes' = 'LAZY'," +
                 "'hoodie.clustering.async.max.commits' = '2'," +
-                "'compaction.schedule.enabled' = 'false'," +
-                "'clustering.schedule.enabled' = 'true'" +
+                "'compaction.schedule.enabled' = 'true'," +
+                "'clustering.schedule.enabled' = 'false'" +
+                "  ,'index.type' = 'BUCKET'\n" +
                 ") */" +
                 " select uuid, name, age, ts, '20230405' from t1_src");
         statementSet.addInsertSql("insert into t1_print select * from t1_src");
 
-//
 
         statementSet.execute();
     }

@@ -1,4 +1,4 @@
-package org.test;
+package org.study;
 
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
