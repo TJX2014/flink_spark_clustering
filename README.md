@@ -6,7 +6,9 @@ mvn clean install -Dflink1.14 -Dspark2.4 -Dscala-2.12 -DskipTests
 mvn clean install -Dflink1.14 -Dspark3.2 -Dscala-2.12 -DskipTests
 
 安装本地flink最新版本：
- mvn clean install -Dflink1.14 -Dspark2.4 -Dscala-2.12 -DskipTests -D"rat.skip=true" -pl packaging/hudi-flink-bundle -am
+mvn clean install -Dflink1.14 -Dspark2.4 -Dscala-2.12 -DskipTests -D"rat.skip=true" -pl packaging/hudi-flink-bundle -am
+mvn clean install -Dflink1.14 -Dspark3.2 -Dscala-2.12 -DskipTests -D"rat.skip=true" -pl packaging/hudi-flink-bundle -am
+
 
 安装spark
 2.4:

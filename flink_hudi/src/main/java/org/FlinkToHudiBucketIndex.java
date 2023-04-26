@@ -13,9 +13,9 @@ import org.slf4j.MDC;
 
 import java.time.Duration;
 
-public class FlinkToHudi {
+public class FlinkToHudiBucketIndex {
 
-    static Logger log = LoggerFactory.getLogger(FlinkToHudi.class);
+    static Logger log = LoggerFactory.getLogger(FlinkToHudiBucketIndex.class);
 
     public static void main(String[] args) throws Exception {
         MDC.put("traceId", "222");
@@ -75,11 +75,11 @@ public class FlinkToHudi {
                 "ts timestamp(3)\n" +
                 ") with (\n" +
                 " 'connector'='datagen',\n" +
-                " 'rows-per-second'='1',\n" +
-                " 'fields.uuid.start'='0',\n" +
-                " 'fields.uuid.end'='100',\n" +
+                " 'rows-per-second'='10000',\n" +
+                " 'fields.uuid.start'='100000',\n" +
+                " 'fields.uuid.end'='10000000',\n" +
                 " 'fields.uuid.kind'='sequence',\n" +
-                " 'fields.name.length'='6',\n" +
+                " 'fields.name.length'='100',\n" +
                 " 'fields.age.kind'='random',\n" +
                 "'fields.age.min'='10',\n" +
                 "'fields.age.max'='100',\n" +
@@ -98,6 +98,12 @@ public class FlinkToHudi {
                 "'hoodie.clustering.async.max.commits' = '2'," +
                 "'compaction.schedule.enabled' = 'true'," +
                 "'clustering.schedule.enabled' = 'false'" +
+                ",'hoodie.storage.layout.type' = 'BUCKET'" +
+                ",'hoodie.index.bucket.engine' = 'CONSISTENT_HASHING'" +
+                "  ,'index.type' = 'BUCKET'\n" +
+                "  ,'hoodie.bucket.index.num.buckets' = '3'\n" +
+                ",'hoodie.clustering.plan.strategy.class' = 'org.apache.hudi.client.clustering.plan.strategy.SparkConsistentBucketClusteringPlanStrategy'" +
+                ",'hoodie.clustering.execution.strategy.class' = 'org.apache.hudi.client.clustering.run.strategy.SparkConsistentBucketClusteringExecutionStrategy'" +
                 ") */" +
                 " select uuid, name, age, ts, '20230405' from t1_src");
         statementSet.addInsertSql("insert into t1_print select * from t1_src");

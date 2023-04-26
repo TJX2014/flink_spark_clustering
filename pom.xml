@@ -32,7 +32,8 @@
         <flink.bundle.version>0.14</flink.bundle.version>
         <trino.version>414</trino.version>
         <hadoop.version>2.10.1</hadoop.version>
-        <hudi.version>0.12.2</hudi.version>
+<!--        <hudi.version>0.12.2</hudi.version>-->
+        <hudi.version>0.14.0-SNAPSHOT</hudi.version>
     </properties>
 
     <dependencies>
